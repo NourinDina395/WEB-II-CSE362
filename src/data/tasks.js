@@ -1,6 +1,4 @@
-// src/tasks.js
-
-// In-memory tasks array
+// src/data/tasks.js
 const tasks = [
   { id: 1, title: "Do homework", completed: false },
   { id: 2, title: "Read book", completed: true },
