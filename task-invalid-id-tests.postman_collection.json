@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "Task API Invalid ID Tests",
+    "_postman_id": "bd1b95ab-1234-44ab-bbbb-999000aaaabc",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET valid ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/tasks/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks", "1"]
+        }
+      }
+    },
+    {
+      "name": "GET invalid ID format",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/tasks/abc",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks", "abc"]
+        }
+      }
+    },
+    {
+      "name": "GET non-existent ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/tasks/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks", "999"]
+        }
+      }
+    }
+  ]
+}
