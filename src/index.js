@@ -1,30 +1,50 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 
+// Sample tasks array
 const tasks = [
-    { id: 1, title: 'Learn Node.js', completed: false, priority: 'high', createdAt: new Date() },
-    { id: 2, title: 'Build REST API', completed: false, priority: 'medium', createdAt: new Date() },
-    { id: 3, title: 'Test API routes', completed: false, priority: 'low', createdAt: new Date() },
-    { id: 4, title: 'Write documentation', completed: false, priority: 'medium', createdAt: new Date() },
-    { id: 5, title: 'Push to GitHub', completed: true, priority: 'high', createdAt: new Date() }
+    {
+        id: 1,
+        title: "Complete assignment",
+        completed: false,
+        priority: "high",
+        createdAt: new Date("2025-11-01T10:00:00")
+    },
+    {
+        id: 2,
+        title: "Read Node.js docs",
+        completed: true,
+        priority: "medium",
+        createdAt: new Date("2025-11-01T12:00:00")
+    },
+    {
+        id: 3,
+        title: "Write blog post",
+        completed: false,
+        priority: "low",
+        createdAt: new Date("2025-11-02T09:00:00")
+    },
+    {
+        id: 4,
+        title: "Push code to GitHub",
+        completed: true,
+        priority: "high",
+        createdAt: new Date("2025-11-02T14:00:00")
+    },
+    {
+        id: 5,
+        title: "Prepare for meeting",
+        completed: false,
+        priority: "medium",
+        createdAt: new Date("2025-11-02T16:00:00")
+    }
 ];
 
-app.get('/', (req, res) => {
-    res.send('Task Management API is running!');
-});
-
+// GET /tasks route
 app.get('/tasks', (req, res) => {
     res.json(tasks);
 });
 
-app.get('/health', (req, res) => {
-    res.json({
-        status: "healthy",
-        uptime: process.uptime()
-    });
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+// Start server
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
