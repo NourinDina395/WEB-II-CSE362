@@ -1,22 +1,22 @@
 const express = require('express');
 const app = express();
-const tasksRouter = require('./routes/tasks');
+const tasksRouter = require('./src/routes/tasks'); // updated path
 
 // Middleware to parse JSON
 app.use(express.json());
 
 // Use tasks router
-app.use('/tasks', tasksRouter);
+app.use('/tasks', tasksRouter); // GET /tasks and GET /tasks/:id
 
 // Health check route
 app.get('/health', (req, res) => {
     res.json({
         status: "healthy",
-        uptime: process.uptime() // uptime in seconds
+        uptime: process.uptime()
     });
 });
 
-// 404 handler for unknown routes
+// 404 handler
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });
 });
