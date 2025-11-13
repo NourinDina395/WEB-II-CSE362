@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "title": "Learn Node.js",
+        "completed": false,
+        "priority": "high",
+        "createdAt": "2025-11-13T17:35:09.295Z"
+    },
+    {
+        "id": 2,
+        "title": "Build REST API",
+        "completed": true,
+        "priority": "medium",
+        "createdAt": "2025-11-13T17:35:09.295Z"
+    },
+    {
+        "id": 3,
+        "title": "Read Express Docs",
+        "completed": false,
+        "priority": "low",
+        "createdAt": "2025-11-13T17:35:09.295Z"
+    },
+    {
+        "id": 4,
+        "title": "Write Tests",
+        "completed": false,
+        "priority": "medium",
+        "createdAt": "2025-11-13T17:35:09.295Z"
+    },
+    {
+        "id": 5,
+        "title": "Deploy App",
+        "completed": true,
+        "priority": "high",
+        "createdAt": "2025-11-13T17:35:09.295Z"
+    }
+]
