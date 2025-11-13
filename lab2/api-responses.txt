@@ -1,0 +1,16 @@
+GET http://localhost:3000/task/1
+Response:
+{
+    "id": 1,
+    "title": "Learn Node.js",
+    "completed": false,
+    "priority": "high",
+    "createdAt": "2025-11-13T18:12:01.703Z"
+}
+
+GET http://localhost:3000/task/999
+Response:
+
+{
+    "error": "Task not found"
+}
