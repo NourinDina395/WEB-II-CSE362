@@ -2,31 +2,23 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-// GET /tasks with pagination
+// GET /tasks with optional search query
 router.get('/', async (req, res) => {
   try {
-    let page = parseInt(req.query.page) || 1;
-    let limit = Math.min(parseInt(req.query.limit) || 10, 50);
-    const offset = (page - 1) * limit;
+    // Use correct column name from MySQL and alias it to createdAt
+    let query = 'SELECT id, title, completed, priority, created_at AS createdAt FROM tasks';
+    const params = [];
 
-    const [countRows] = await db.query(`SELECT COUNT(*) AS total FROM tasks`);
-    const totalTasks = countRows[0].total;
+    if (req.query.q) {
+      query += ' WHERE LOWER(title) LIKE ?';
+      params.push(`%${req.query.q.toLowerCase()}%`);
+    }
 
-    const [taskRows] = await db.query(
-      `SELECT * FROM tasks ORDER BY id DESC LIMIT ? OFFSET ?`,
-      [limit, offset]
-    );
-
-    res.json({
-      totalTasks,
-      totalPages: Math.ceil(totalTasks / limit),
-      currentPage: page,
-      limit,
-      data: taskRows
-    });
+    const [rows] = await db.query(query, params);
+    res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    console.error('Database Error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
