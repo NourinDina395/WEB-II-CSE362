@@ -1,30 +1,33 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../config/db');
 
-// In-memory tasks array
-const tasks = [
-  { id: 1, title: "Learn Node.js", completed: false, priority: "high", createdAt: new Date() },
-  { id: 2, title: "Build REST API", completed: true, priority: "medium", createdAt: new Date() },
-  { id: 3, title: "Read Express Docs", completed: false, priority: "low", createdAt: new Date() },
-  { id: 4, title: "Write Tests", completed: false, priority: "medium", createdAt: new Date() },
-  { id: 5, title: "Deploy App", completed: true, priority: "high", createdAt: new Date() },
-];
+// GET /tasks with pagination
+router.get('/', async (req, res) => {
+  try {
+    let page = parseInt(req.query.page) || 1;
+    let limit = Math.min(parseInt(req.query.limit) || 10, 50);
+    const offset = (page - 1) * limit;
 
-// GET /tasks - return all tasks
-router.get('/', (req, res) => {
-    res.json(tasks);
-});
+    const [countRows] = await db.query(`SELECT COUNT(*) AS total FROM tasks`);
+    const totalTasks = countRows[0].total;
 
-// GET /task/:id - return task by ID
-router.get('/:id', (req, res) => {
-    const taskId = parseInt(req.params.id);
-    const task = tasks.find(t => t.id === taskId);
+    const [taskRows] = await db.query(
+      `SELECT * FROM tasks ORDER BY id DESC LIMIT ? OFFSET ?`,
+      [limit, offset]
+    );
 
-    if (task) {
-        res.json(task);
-    } else {
-        res.status(404).json({ error: "Task not found" });
-    }
+    res.json({
+      totalTasks,
+      totalPages: Math.ceil(totalTasks / limit),
+      currentPage: page,
+      limit,
+      data: taskRows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 module.exports = router;
