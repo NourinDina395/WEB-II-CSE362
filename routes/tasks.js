@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const logger = require('../logger');
 
-// GET /tasks - get all active tasks (exclude soft-deleted)
+// GET /tasks
 router.get('/', async (req, res) => {
   try {
     let query = 'SELECT id, title, completed, priority, created_at AS createdAt FROM tasks WHERE deleted_at IS NULL';
@@ -16,25 +17,12 @@ router.get('/', async (req, res) => {
     const [rows] = await db.query(query, params);
     res.json(rows);
   } catch (err) {
-    console.error('Database Error:', err);
-    res.status(500).json({ error: err.message });
+    logger.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// GET /tasks/deleted - get only soft-deleted tasks
-router.get('/deleted', async (req, res) => {
-  try {
-    const [rows] = await db.query(
-      'SELECT id, title, completed, priority, created_at AS createdAt, deleted_at AS deletedAt FROM tasks WHERE deleted_at IS NOT NULL'
-    );
-    res.json(rows);
-  } catch (err) {
-    console.error('Database Error:', err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// DELETE /tasks/:id - soft delete
+// DELETE /tasks/:id
 router.delete('/:id', async (req, res) => {
   try {
     const [result] = await db.query(
@@ -48,12 +36,12 @@ router.delete('/:id', async (req, res) => {
 
     res.json({ message: 'Task soft-deleted successfully' });
   } catch (err) {
-    console.error('Database Error:', err);
-    res.status(500).json({ error: err.message });
+    logger.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// PUT /tasks/:id/restore - restore a soft-deleted task
+// PUT /tasks/:id/restore
 router.put('/:id/restore', async (req, res) => {
   try {
     const [result] = await db.query(
@@ -67,8 +55,8 @@ router.put('/:id/restore', async (req, res) => {
 
     res.json({ message: 'Task restored successfully' });
   } catch (err) {
-    console.error('Database Error:', err);
-    res.status(500).json({ error: err.message });
+    logger.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
